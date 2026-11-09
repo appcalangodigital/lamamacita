@@ -706,7 +706,7 @@ html.loj .footer-cart,html.loj #btn-admin{display:none!important}
 
     <div id="adm">
 <div class="hd"><button class="k" style="padding:8px 12px;font-size:.9rem" onclick="fecharAdmin()">← Cardápio</button><span>Painel</span><button class="k" style="padding:8px 12px;font-size:.9rem" onclick="sair()">Sair</button></div>
-<div id="lg"><b style="color:var(--g)">Digite o PIN</b><input id="pin" type="password" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" style="max-width:240px;text-align:center"><button class="b" onclick="entrar()">Entrar</button><small id="lge"></small></div>
+<div id="lg"><b style="color:var(--g)">Digite o PIN</b><div style="position:relative;width:100%;max-width:240px;margin:0 auto"><input id="pin" type="password" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" style="max-width:none;width:100%;padding-right:44px;text-align:center"><button type="button" id="eye" aria-label="Mostrar senha" onclick="var p=document.getElementById('pin'),s=p.type==='password';p.type=s?'text':'password';this.textContent=s?'🙈':'👁️';this.setAttribute('aria-label',s?'Ocultar senha':'Mostrar senha')" style="position:absolute;right:4px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:1.3rem;padding:6px 8px;cursor:pointer;color:#fff">👁️</button></div><button class="b" onclick="entrar()">Entrar</button><small id="lge"></small></div>
 <div class="w">
 <div class="sw"><button id="k_lanches" onclick="setK('lanches')"></button><button id="k_marmitas" onclick="setK('marmitas')"></button></div>
 <div id="stt" class="st"></div><div id="ctl" class="row"></div>
