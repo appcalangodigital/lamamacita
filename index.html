@@ -79,6 +79,19 @@
             border-bottom: 1px solid #333;
         }
 
+        .status-pc{display:none}
+        @media (min-width:768px){
+            .status-pc{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:0}
+            .status-pc .status-banner{margin:12px 16px 0;align-self:start}
+            #sc-lanches{grid-column:1}
+            #sc-marmitas{grid-column:2}
+            #status-marmita{display:none !important}
+            #status-cozinha{display:none !important}
+        }
+        .st-tab{display:block;font-size:.78rem;font-weight:bold;margin-top:4px}
+        .st-aberta{color:#43c660}
+        .st-fechada{color:#ff4d4d}
+        .st-pausada{color:#ff9800}
         .tab-btn {
             flex: 1;
             padding: 16px 8px;
@@ -610,10 +623,11 @@ html.loj .footer-cart,html.loj #btn-admin{display:none!important}
     </header>
 
     <div class="nav-tabs">
-        <button class="tab-btn active" onclick="switchTab('lanches')">🍕 Pizzas e Salgados</button>
-        <button class="tab-btn" onclick="switchTab('marmitas')">🍱 Marmitas</button>
+        <button class="tab-btn active" onclick="switchTab('lanches')">🍕 Pizzas e Salgados<span id="st-lanches" class="st-tab st-aberta">Cozinha Aberta</span></button>
+        <button class="tab-btn" onclick="switchTab('marmitas')">🍱 Marmitas<span id="st-marmitas" class="st-tab st-aberta">Cozinha Aberta</span></button>
     </div>
 
+    <div id="status-cozinha-pc" class="status-pc"><div id="sc-lanches" class="status-banner">Consulte a disponibilidade do dia.</div><div id="sc-marmitas" class="status-banner">Marmitas de quinta a segunda. Consulte a disponibilidade do dia.</div></div>
     <div id="status-cozinha" class="status-banner" style="display:none;margin:12px 16px 0"></div>
     <div class="container">
 
@@ -796,8 +810,18 @@ html.loj .footer-cart,html.loj #btn-admin{display:none!important}
             const b = document.getElementById('status-cozinha');
             const nomes = { lanches: 'Pizzas e Salgados', marmitas: 'Marmitas' };
             const l = ['lanches', 'marmitas'].filter(k => !estado[k].aberta || estado[k].pausada).map(k => nomes[k] + ': ' + (!estado[k].aberta ? 'cozinha fechada' : 'cozinha pausada'));
-            b.style.display = l.length ? 'block' : 'none';
+            b.style.display = 'none';
             b.innerText = l.join('  |  ');
+            ['lanches', 'marmitas'].forEach(k => {
+                const x = document.getElementById('sc-' + k);
+                const fechada = !estado[k].aberta || estado[k].pausada;
+                x.style.display = 'block';
+                x.innerText = k === 'marmitas' ? 'Marmitas de quinta a segunda. Consulte a disponibilidade do dia.' : 'Consulte a disponibilidade do dia.';
+                const st = document.getElementById('st-' + k);
+                const cls = !estado[k].aberta ? 'fechada' : (estado[k].pausada ? 'pausada' : 'aberta');
+                st.className = 'st-tab st-' + cls;
+                st.innerText = 'Cozinha ' + (cls === 'fechada' ? 'Fechada' : cls === 'pausada' ? 'Pausada' : 'Aberta');
+            });
         }
         async function carregar() {
             if (API.startsWith('COLE')) return;
