@@ -632,7 +632,15 @@ html.loj .footer-cart,html.loj #btn-admin{display:none!important}
     <div class="container">
 
         <!-- ABA 1: PASTEIS E SANDUÍCHES -->
-        <div id="tab-lanches" class="tab-content active"><div id="cats"></div></div>
+        <div id="tab-lanches" class="tab-content active">
+            <div id="meio-box" class="marmita-box" style="margin-bottom:16px;display:none">
+                <h3 style="font-size:1.2rem;color:var(--gold);text-align:center">🍕 Pizza Meio a Meio (Grande 35 cm)</h3>
+                <div class="item-desc" style="text-align:center;margin:6px 0 10px">Escolha 2 sabores. Vale o valor do sabor mais caro.</div>
+                <select id="meio1" style="width:100%;margin-bottom:8px"></select>
+                <select id="meio2" style="width:100%;margin-bottom:10px"></select>
+                <button type="button" class="btn-add-marmita" onclick="addMeio()">Adicionar Meio a Meio ao Pedido</button>
+            </div>
+            <div id="cats"></div></div>
 
         <!-- ABA 2: MARMITAS -->
         <div id="tab-marmitas" class="tab-content">
@@ -656,6 +664,7 @@ html.loj .footer-cart,html.loj #btn-admin{display:none!important}
 </div>
 <button type="button" id="btn-add-marmita-el" class="btn-add-marmita" onclick="addMarmita()">Adicionar Marmita ao Pedido</button>
             </div>
+            <div id="cats-marm" style="margin-top:16px"></div>
         </div>
 
         
@@ -673,7 +682,10 @@ html.loj .footer-cart,html.loj #btn-admin{display:none!important}
                 </div>
                 <div class="form-group">
                     <label for="address">Endereço Completo de Entrega:</label>
-                    <textarea id="address" rows="2" placeholder="Rua, número, bairro e ponto de referência" autocomplete="street-address"></textarea>
+                    <textarea id="address" rows="2" placeholder="Rua, número e bairro" autocomplete="street-address"></textarea>
+                    <div id="taxa-info" style="font-size:.85rem;color:var(--gold);margin:6px 0 10px;min-height:1.1em"></div>
+                    <input id="ref" type="text" placeholder="Ponto de referência (opcional)" style="width:100%;margin-bottom:10px">
+                    <textarea id="obs" rows="2" placeholder="Observações do pedido (ex.: sem cebola, molho extra, ponto da carne)" style="width:100%;margin-bottom:10px"></textarea>
                 </div>
                 <div class="em-row" id="pay-row">
                     <div class="form-group">
@@ -725,9 +737,9 @@ html.loj .footer-cart,html.loj #btn-admin{display:none!important}
 <div class="w">
 <div class="sw"><button id="k_lanches" onclick="setK('lanches')"></button><button id="k_marmitas" onclick="setK('marmitas')"></button></div>
 <div id="stt" class="st"></div><div id="ctl" class="row"></div>
-<div class="tabs"><button class="on" onclick="aba(1)">Cardápio</button><button onclick="aba(2)">Pedidos</button><button onclick="aba(3)">Relatório</button></div>
+<div class="tabs"><button class="on" onclick="aba(1)">Cardápio</button><button onclick="aba(2)">Pedidos</button><button onclick="aba(3)">Relatório</button><button onclick="aba(4)">🛵 Entregas</button></div>
 <button class="b" style="width:100%;margin:8px 0" onclick="sino()">🔔 Testar sino</button>
-<div id="t1"></div><div id="t2" hidden></div><div id="t3" hidden></div>
+<div id="t1"></div><div id="t2" hidden></div><div id="t3" hidden></div><div id="t4" hidden></div><div style="text-align:center;margin:28px 0 12px;opacity:.65"><button class="k" style="flex:none;padding:8px 14px;font-size:.8rem" onclick="zerar()">🧹 Zerar testes (somente dono)</button></div>
 </div><div id="sv"></div>
 </div>
     <script>
@@ -761,7 +773,7 @@ html.loj .footer-cart,html.loj #btn-admin{display:none!important}
         }
 
         const API = "https://script.google.com/macros/s/AKfycbwmXOZJv4Y-RAX20lrbIqYMn4BMvEBaWXbstFtntQlrDu_lqrwOYuo-UINkxSXk7Ik/exec";
-        let MENU = {"cats": [{"id": "pizzaP", "nome": "🍕 Pizza Pequena 25 cm", "itens": [{"id": 1, "name": "Pizza Mussarela (P)", "desc": "Mussarela, molho, tomate", "price": 23}, {"id": 2, "name": "Pizza Calabresa (P)", "desc": "Mussarela, calabresa, cebola", "price": 23}, {"id": 3, "name": "Pizza Presunto (P)", "desc": "Mussarela, presunto, tomate", "price": 23}, {"id": 4, "name": "Pizza Marguerita (P)", "desc": "Mussarela, tomate, manjericão", "price": 23}, {"id": 5, "name": "Pizza Alho Frito (P)", "desc": "Mussarela, alho frito, catupiry", "price": 23}, {"id": 6, "name": "Pizza Frango (P)", "desc": "Mussarela, frango, milho", "price": 26}, {"id": 7, "name": "Pizza Portuguesa (P)", "desc": "Mussarela, presunto, ovo, ervilha, cebola", "price": 28}, {"id": 8, "name": "Pizza Frango com Catupiry (P)", "desc": "Mussarela, frango, milho, catupiry", "price": 28}, {"id": 9, "name": "Pizza Bacon (P)", "desc": "Mussarela, bacon, tomate", "price": 28}, {"id": 10, "name": "Pizza Frangobacon (P)", "desc": "Mussarela, frango, bacon, tomate", "price": 30}, {"id": 11, "name": "Pizza Calabacon (P)", "desc": "Mussarela, calabresa, bacon, cebola", "price": 30}, {"id": 12, "name": "Pizza Caipira (P)", "desc": "Mussarela, frango, milho, catupiry, batata palha", "price": 35}, {"id": 13, "name": "Pizza Mexicana (P)", "desc": "Mussarela, calabresa, presunto, cebola, pimenta calabresa", "price": 35}, {"id": 14, "name": "Pizza Peito de Peru (P)", "desc": "Mussarela, peito de peru, catupiry", "price": 30}, {"id": 15, "name": "Pizza Lombo Canadense (P)", "desc": "Mussarela, lombo canadense, catupiry", "price": 30}, {"id": 16, "name": "Pizza Vegetariana (P)", "desc": "Mussarela, vegetais, brócolis, milho, alho frito", "price": 33}, {"id": 17, "name": "Pizza Carne de Sol (P)", "desc": "Mussarela, carne de sol, cebola", "price": 35}, {"id": 18, "name": "Pizza 4 Queijos (P)", "desc": "Mussarela, coalho, parmesão, requeijão", "price": 38}, {"id": 19, "name": "Pizza Frango + 3 Queijos (P)", "desc": "Mussarela, frango, parmesão, requeijão", "price": 39}, {"id": 20, "name": "Pizza Camarão (P)", "desc": "Mussarela, camarão, alho frito", "price": 38}]}, {"id": "pizzaM", "nome": "🍕 Pizza Média 30 cm", "itens": [{"id": 21, "name": "Pizza Mussarela (M)", "desc": "Mussarela, molho, tomate", "price": 28}, {"id": 22, "name": "Pizza Calabresa (M)", "desc": "Mussarela, calabresa, cebola", "price": 28}, {"id": 23, "name": "Pizza Presunto (M)", "desc": "Mussarela, presunto, tomate", "price": 28}, {"id": 24, "name": "Pizza Marguerita (M)", "desc": "Mussarela, tomate, manjericão", "price": 28}, {"id": 25, "name": "Pizza Alho Frito (M)", "desc": "Mussarela, alho frito, catupiry", "price": 28}, {"id": 26, "name": "Pizza Frango (M)", "desc": "Mussarela, frango, milho", "price": 30}, {"id": 27, "name": "Pizza Portuguesa (M)", "desc": "Mussarela, presunto, ovo, ervilha, cebola", "price": 33}, {"id": 28, "name": "Pizza Frango com Catupiry (M)", "desc": "Mussarela, frango, milho, catupiry", "price": 33}, {"id": 29, "name": "Pizza Bacon (M)", "desc": "Mussarela, bacon, tomate", "price": 33}, {"id": 30, "name": "Pizza Frangobacon (M)", "desc": "Mussarela, frango, bacon, tomate", "price": 35}, {"id": 31, "name": "Pizza Calabacon (M)", "desc": "Mussarela, calabresa, bacon, cebola", "price": 35}, {"id": 32, "name": "Pizza Caipira (M)", "desc": "Mussarela, frango, milho, catupiry, batata palha", "price": 40}, {"id": 33, "name": "Pizza Mexicana (M)", "desc": "Mussarela, calabresa, presunto, cebola, pimenta calabresa", "price": 40}, {"id": 34, "name": "Pizza Peito de Peru (M)", "desc": "Mussarela, peito de peru, catupiry", "price": 35}, {"id": 35, "name": "Pizza Lombo Canadense (M)", "desc": "Mussarela, lombo canadense, catupiry", "price": 35}, {"id": 36, "name": "Pizza Vegetariana (M)", "desc": "Mussarela, vegetais, brócolis, milho, alho frito", "price": 38}, {"id": 37, "name": "Pizza Carne de Sol (M)", "desc": "Mussarela, carne de sol, cebola", "price": 40}, {"id": 38, "name": "Pizza 4 Queijos (M)", "desc": "Mussarela, coalho, parmesão, requeijão", "price": 43}, {"id": 39, "name": "Pizza Frango + 3 Queijos (M)", "desc": "Mussarela, frango, parmesão, requeijão", "price": 44}, {"id": 40, "name": "Pizza Camarão (M)", "desc": "Mussarela, camarão, alho frito", "price": 43}]}, {"id": "pizzaG", "nome": "🍕 Pizza Grande 35 cm", "itens": [{"id": 41, "name": "Pizza Mussarela (G)", "desc": "Mussarela, molho, tomate", "price": 33}, {"id": 42, "name": "Pizza Calabresa (G)", "desc": "Mussarela, calabresa, cebola", "price": 33}, {"id": 43, "name": "Pizza Presunto (G)", "desc": "Mussarela, presunto, tomate", "price": 33}, {"id": 44, "name": "Pizza Marguerita (G)", "desc": "Mussarela, tomate, manjericão", "price": 33}, {"id": 45, "name": "Pizza Alho Frito (G)", "desc": "Mussarela, alho frito, catupiry", "price": 33}, {"id": 46, "name": "Pizza Frango (G)", "desc": "Mussarela, frango, milho", "price": 35}, {"id": 47, "name": "Pizza Portuguesa (G)", "desc": "Mussarela, presunto, ovo, ervilha, cebola", "price": 38}, {"id": 48, "name": "Pizza Frango com Catupiry (G)", "desc": "Mussarela, frango, milho, catupiry", "price": 38}, {"id": 49, "name": "Pizza Bacon (G)", "desc": "Mussarela, bacon, tomate", "price": 38}, {"id": 50, "name": "Pizza Frangobacon (G)", "desc": "Mussarela, frango, bacon, tomate", "price": 40}, {"id": 51, "name": "Pizza Calabacon (G)", "desc": "Mussarela, calabresa, bacon, cebola", "price": 40}, {"id": 52, "name": "Pizza Caipira (G)", "desc": "Mussarela, frango, milho, catupiry, batata palha", "price": 45}, {"id": 53, "name": "Pizza Mexicana (G)", "desc": "Mussarela, calabresa, presunto, cebola, pimenta calabresa", "price": 45}, {"id": 54, "name": "Pizza Peito de Peru (G)", "desc": "Mussarela, peito de peru, catupiry", "price": 40}, {"id": 55, "name": "Pizza Lombo Canadense (G)", "desc": "Mussarela, lombo canadense, catupiry", "price": 40}, {"id": 56, "name": "Pizza Vegetariana (G)", "desc": "Mussarela, vegetais, brócolis, milho, alho frito", "price": 43}, {"id": 57, "name": "Pizza Carne de Sol (G)", "desc": "Mussarela, carne de sol, cebola", "price": 45}, {"id": 58, "name": "Pizza 4 Queijos (G)", "desc": "Mussarela, coalho, parmesão, requeijão", "price": 48}, {"id": 59, "name": "Pizza Frango + 3 Queijos (G)", "desc": "Mussarela, frango, parmesão, requeijão", "price": 49}, {"id": 60, "name": "Pizza Camarão (G)", "desc": "Mussarela, camarão, alho frito", "price": 48}]}, {"id": "pizza3", "nome": "🍕 Pizzas de 3 Sabores", "itens": [{"id": 61, "name": "3 Sabores: Calabresa + Mista + Frango", "desc": "9 pedaços e borda recheada", "price": 60}, {"id": 62, "name": "3 Sabores: Brócolis c/ Alho + Vegetariana + Muçarela", "desc": "9 pedaços e borda recheada", "price": 60}, {"id": 63, "name": "3 Sabores: Portuguesa + Marguerita + Frango c/ Catupiry", "desc": "9 pedaços e borda recheada", "price": 65}, {"id": 64, "name": "3 Sabores: Peito de Peru + Bacon + Lombo Canadense", "desc": "9 pedaços e borda recheada", "price": 70}, {"id": 65, "name": "3 Sabores: Calabacon + Frangobacon + Calamista", "desc": "9 pedaços e borda recheada", "price": 75}, {"id": 66, "name": "3 Sabores: Pepperoni + Frango 3 Queijos + Atum", "desc": "9 pedaços e borda recheada", "price": 75}, {"id": 67, "name": "3 Sabores: Carne de Sol + 4 Queijos + Camarão", "desc": "9 pedaços e borda recheada", "price": 75}, {"id": 68, "name": "3 Sabores: Chapéu de Palha + Calabresa c/ Cheddar + Presunto c/ Catupiry", "desc": "9 pedaços e borda recheada", "price": 75}]}, {"id": "turbine", "nome": "⭐ Turbine sua Pizza", "itens": [{"id": 69, "name": "Turbine: Proteínas", "desc": "Adicional de proteínas", "price": 10}, {"id": 70, "name": "Turbine: Cremes", "desc": "Adicional de cremes", "price": 5}, {"id": 71, "name": "Turbine: Variedades", "desc": "Adicional de variedades", "price": 3}, {"id": 72, "name": "Borda Catupiry", "desc": "Borda recheada", "price": 5}, {"id": 73, "name": "Borda Cheddar", "desc": "Borda recheada", "price": 8}, {"id": 74, "name": "Salva Borda Bacon", "desc": "", "price": 10}, {"id": 75, "name": "Salva Borda Alho", "desc": "", "price": 10}, {"id": 76, "name": "Salva Borda da Casa", "desc": "", "price": 10}]}, {"id": "forno", "nome": "🥐 Salgados de Forno (120g)", "itens": [{"id": 77, "name": "Bola Burgue", "desc": "Carne + catupiry", "price": 7}, {"id": 78, "name": "Dogão", "desc": "Salsicha + queijo + catupiry", "price": 7}, {"id": 79, "name": "Joelho", "desc": "Queijo + presunto + catupiry", "price": 7}, {"id": 80, "name": "Frango (forno)", "desc": "Frango cremoso + catupiry", "price": 7}, {"id": 81, "name": "Carne (forno)", "desc": "Carne + bechamel", "price": 7}, {"id": 82, "name": "Calabresa (forno)", "desc": "Calabresa + cheddar", "price": 7}]}, {"id": "fritos", "nome": "🍤 Salgados Fritos", "itens": [{"id": 83, "name": "Coxinha", "desc": "Frango cremoso", "price": 5}, {"id": 84, "name": "Enroladinho", "desc": "Salsicha", "price": 5}, {"id": 85, "name": "Croquete", "desc": "Queijo + presunto", "price": 5}, {"id": 86, "name": "Risole", "desc": "Carne cremosa", "price": 5}, {"id": 87, "name": "Calabresa (frito)", "desc": "Calabresa + orégano", "price": 5}]}, {"id": "festaf", "nome": "🎉 Salgados de Festa: Fritos", "itens": [{"id": 88, "name": "100 Salgadinhos Fritos", "desc": "Frango, salsicha, queijo, misto, carne, pastelzinho", "price": 40}, {"id": 89, "name": "50 Salgadinhos Fritos", "desc": "Frango, salsicha, queijo, misto, carne, pastelzinho", "price": 20}, {"id": 90, "name": "35 Salgadinhos Fritos", "desc": "Frango, salsicha, queijo, misto, carne, pastelzinho", "price": 15}]}, {"id": "festao", "nome": "🎉 Salgados de Festa: Forno (tipo coquetel)", "itens": [{"id": 91, "name": "100 Diversos de Forno", "desc": "Mini pizza, mini burguer, mini dog, mini joelho, mini frango", "price": 80}, {"id": 92, "name": "50 Diversos de Forno", "desc": "Mini pizza, mini burguer, mini dog, mini joelho, mini frango", "price": 45}, {"id": 93, "name": "20 Diversos de Forno", "desc": "Mini pizza, mini burguer, mini dog, mini joelho, mini frango", "price": 20}, {"id": 94, "name": "Combo: Batata Frita + 2 Molhos", "desc": "Promoção por tempo limitado, só junto com salgados de festa", "price": 7}]}, {"id": "kit", "nome": "🎁 Kit Festa Coquetel", "itens": [{"id": 95, "name": "Kit Festa Coquetel (caixa com 50)", "desc": "Caixa com 50 unidades", "price": 44.99}]}, {"id": "bebidas", "nome": "🥤 Bebidas", "itens": [{"id": 96, "name": "Coca-Cola Lata", "desc": "", "price": 0, "pausado": true}, {"id": 97, "name": "Coca-Cola 1L", "desc": "", "price": 0, "pausado": true}, {"id": 98, "name": "Coca-Cola 2L", "desc": "", "price": 0, "pausado": true}, {"id": 99, "name": "Guaraná 1L", "desc": "", "price": 0, "pausado": true}, {"id": 100, "name": "Guaraná 2L", "desc": "", "price": 0, "pausado": true}, {"id": 101, "name": "Suco", "desc": "", "price": 0, "pausado": true}]}, {"id": "pratos", "nome": "Marmita: Proteínas", "itens": [{"id": 1000, "name": "Posta de Tilápia", "lib": true}, {"id": 1001, "name": "Bife a Cavalo", "lib": true}, {"id": 1002, "name": "Bisteca de Porco", "lib": true}, {"id": 1003, "name": "Fígado de Frango", "lib": true}, {"id": 1004, "name": "Fígado de Boi", "lib": true}, {"id": 1005, "name": "Linguiça", "lib": true}, {"id": 1006, "name": "Mistão", "lib": true}, {"id": 1007, "name": "Porco ao Molho", "lib": true}, {"id": 1008, "name": "Porco Assado", "lib": true}, {"id": 1009, "name": "Frango Assado", "lib": true}, {"id": 1010, "name": "Filé de Frango", "lib": true}, {"id": 1011, "name": "Frango ao Molho", "lib": true}, {"id": 1012, "name": "Estrogonofe de Frango", "lib": true}, {"id": 1013, "name": "Cozido de Boi/Pirão", "lib": true}, {"id": 1014, "name": "Panelada", "lib": true}, {"id": 1015, "name": "Feijoada", "lib": true}, {"id": 1016, "name": "Mão de Vaca", "lib": true}, {"id": 1017, "name": "Calabresa Acebolada", "lib": true}, {"id": 1018, "name": "Lasanha", "lib": true}, {"id": 1019, "name": "Ovos", "lib": true}], "tipo": "prato"}, {"id": "acomp", "nome": "Marmita: Acompanhamentos", "itens": [{"id": 1020, "name": "Feijão", "lib": true}, {"id": 1021, "name": "Arroz Refogado", "lib": true}, {"id": 1022, "name": "Macarrão", "lib": true}, {"id": 1023, "name": "Baião", "lib": true}, {"id": 1024, "name": "Farofa", "lib": true}, {"id": 1025, "name": "Cuscuz", "lib": true}], "tipo": "acomp"}, {"id": "saladas", "nome": "Marmita: Saladas", "itens": [{"id": 1026, "name": "Repolho Cremoso", "lib": true}, {"id": 1027, "name": "Alface Mista", "lib": true}, {"id": 1028, "name": "Vinagrete", "lib": true}, {"id": 1029, "name": "Salada de Maionese", "lib": true}], "tipo": "acomp"}, {"id": "compl", "nome": "Marmita: Complementos", "itens": [{"id": 1030, "name": "Batata Doce", "lib": true}, {"id": 1031, "name": "Abóbora", "lib": true}, {"id": 1032, "name": "Macaxeira", "lib": true}, {"id": 1033, "name": "Batata Frita", "lib": true}], "tipo": "acomp"}], "p1": 14, "p2": 18};
+        let MENU = {"cats": [{"id": "pizzaG", "nome": "🍕 Pizza Grande 35 cm", "itens": [{"id": 41, "name": "Pizza Mussarela (Grande)", "desc": "Mussarela, molho, tomate", "price": 33}, {"id": 42, "name": "Pizza Calabresa (Grande)", "desc": "Mussarela, calabresa, cebola", "price": 33}, {"id": 43, "name": "Pizza Presunto (Grande)", "desc": "Mussarela, presunto, tomate", "price": 33}, {"id": 44, "name": "Pizza Marguerita (Grande)", "desc": "Mussarela, tomate, manjericão", "price": 33}, {"id": 45, "name": "Pizza Alho Frito (Grande)", "desc": "Mussarela, alho frito, catupiry", "price": 33}, {"id": 46, "name": "Pizza Frango (Grande)", "desc": "Mussarela, frango, milho", "price": 35}, {"id": 47, "name": "Pizza Portuguesa (Grande)", "desc": "Mussarela, presunto, ovo, ervilha, cebola", "price": 38}, {"id": 48, "name": "Pizza Frango com Catupiry (Grande)", "desc": "Mussarela, frango, milho, catupiry", "price": 38}, {"id": 49, "name": "Pizza Bacon (Grande)", "desc": "Mussarela, bacon, tomate", "price": 38}, {"id": 50, "name": "Pizza Frangobacon (Grande)", "desc": "Mussarela, frango, bacon, tomate", "price": 40}, {"id": 51, "name": "Pizza Calabacon (Grande)", "desc": "Mussarela, calabresa, bacon, cebola", "price": 40}, {"id": 52, "name": "Pizza Caipira (Grande)", "desc": "Mussarela, frango, milho, catupiry, batata palha", "price": 45}, {"id": 53, "name": "Pizza Mexicana (Grande)", "desc": "Mussarela, calabresa, presunto, cebola, pimenta calabresa", "price": 45}, {"id": 54, "name": "Pizza Peito de Peru (Grande)", "desc": "Mussarela, peito de peru, catupiry", "price": 40}, {"id": 55, "name": "Pizza Lombo Canadense (Grande)", "desc": "Mussarela, lombo canadense, catupiry", "price": 40}, {"id": 56, "name": "Pizza Vegetariana (Grande)", "desc": "Mussarela, vegetais, brócolis, milho, alho frito", "price": 43}, {"id": 57, "name": "Pizza Carne de Sol (Grande)", "desc": "Mussarela, carne de sol, cebola", "price": 45}, {"id": 58, "name": "Pizza 4 Queijos (Grande)", "desc": "Mussarela, coalho, parmesão, requeijão", "price": 48}, {"id": 59, "name": "Pizza Frango + 3 Queijos (Grande)", "desc": "Mussarela, frango, parmesão, requeijão", "price": 49}, {"id": 60, "name": "Pizza Camarão (Grande)", "desc": "Mussarela, camarão, alho frito", "price": 48}]}, {"id": "pizzaM", "nome": "🍕 Pizza Média 30 cm", "itens": [{"id": 21, "name": "Pizza Mussarela (Média)", "desc": "Mussarela, molho, tomate", "price": 28}, {"id": 22, "name": "Pizza Calabresa (Média)", "desc": "Mussarela, calabresa, cebola", "price": 28}, {"id": 23, "name": "Pizza Presunto (Média)", "desc": "Mussarela, presunto, tomate", "price": 28}, {"id": 24, "name": "Pizza Marguerita (Média)", "desc": "Mussarela, tomate, manjericão", "price": 28}, {"id": 25, "name": "Pizza Alho Frito (Média)", "desc": "Mussarela, alho frito, catupiry", "price": 28}, {"id": 26, "name": "Pizza Frango (Média)", "desc": "Mussarela, frango, milho", "price": 30}, {"id": 27, "name": "Pizza Portuguesa (Média)", "desc": "Mussarela, presunto, ovo, ervilha, cebola", "price": 33}, {"id": 28, "name": "Pizza Frango com Catupiry (Média)", "desc": "Mussarela, frango, milho, catupiry", "price": 33}, {"id": 29, "name": "Pizza Bacon (Média)", "desc": "Mussarela, bacon, tomate", "price": 33}, {"id": 30, "name": "Pizza Frangobacon (Média)", "desc": "Mussarela, frango, bacon, tomate", "price": 35}, {"id": 31, "name": "Pizza Calabacon (Média)", "desc": "Mussarela, calabresa, bacon, cebola", "price": 35}, {"id": 32, "name": "Pizza Caipira (Média)", "desc": "Mussarela, frango, milho, catupiry, batata palha", "price": 40}, {"id": 33, "name": "Pizza Mexicana (Média)", "desc": "Mussarela, calabresa, presunto, cebola, pimenta calabresa", "price": 40}, {"id": 34, "name": "Pizza Peito de Peru (Média)", "desc": "Mussarela, peito de peru, catupiry", "price": 35}, {"id": 35, "name": "Pizza Lombo Canadense (Média)", "desc": "Mussarela, lombo canadense, catupiry", "price": 35}, {"id": 36, "name": "Pizza Vegetariana (Média)", "desc": "Mussarela, vegetais, brócolis, milho, alho frito", "price": 38}, {"id": 37, "name": "Pizza Carne de Sol (Média)", "desc": "Mussarela, carne de sol, cebola", "price": 40}, {"id": 38, "name": "Pizza 4 Queijos (Média)", "desc": "Mussarela, coalho, parmesão, requeijão", "price": 43}, {"id": 39, "name": "Pizza Frango + 3 Queijos (Média)", "desc": "Mussarela, frango, parmesão, requeijão", "price": 44}, {"id": 40, "name": "Pizza Camarão (Média)", "desc": "Mussarela, camarão, alho frito", "price": 43}]}, {"id": "pizzaP", "nome": "🍕 Pizza Broto 25 cm", "itens": [{"id": 1, "name": "Pizza Mussarela (Broto)", "desc": "Mussarela, molho, tomate", "price": 23}, {"id": 2, "name": "Pizza Calabresa (Broto)", "desc": "Mussarela, calabresa, cebola", "price": 23}, {"id": 3, "name": "Pizza Presunto (Broto)", "desc": "Mussarela, presunto, tomate", "price": 23}, {"id": 4, "name": "Pizza Marguerita (Broto)", "desc": "Mussarela, tomate, manjericão", "price": 23}, {"id": 5, "name": "Pizza Alho Frito (Broto)", "desc": "Mussarela, alho frito, catupiry", "price": 23}, {"id": 6, "name": "Pizza Frango (Broto)", "desc": "Mussarela, frango, milho", "price": 26}, {"id": 7, "name": "Pizza Portuguesa (Broto)", "desc": "Mussarela, presunto, ovo, ervilha, cebola", "price": 28}, {"id": 8, "name": "Pizza Frango com Catupiry (Broto)", "desc": "Mussarela, frango, milho, catupiry", "price": 28}, {"id": 9, "name": "Pizza Bacon (Broto)", "desc": "Mussarela, bacon, tomate", "price": 28}, {"id": 10, "name": "Pizza Frangobacon (Broto)", "desc": "Mussarela, frango, bacon, tomate", "price": 30}, {"id": 11, "name": "Pizza Calabacon (Broto)", "desc": "Mussarela, calabresa, bacon, cebola", "price": 30}, {"id": 12, "name": "Pizza Caipira (Broto)", "desc": "Mussarela, frango, milho, catupiry, batata palha", "price": 35}, {"id": 13, "name": "Pizza Mexicana (Broto)", "desc": "Mussarela, calabresa, presunto, cebola, pimenta calabresa", "price": 35}, {"id": 14, "name": "Pizza Peito de Peru (Broto)", "desc": "Mussarela, peito de peru, catupiry", "price": 30}, {"id": 15, "name": "Pizza Lombo Canadense (Broto)", "desc": "Mussarela, lombo canadense, catupiry", "price": 30}, {"id": 16, "name": "Pizza Vegetariana (Broto)", "desc": "Mussarela, vegetais, brócolis, milho, alho frito", "price": 33}, {"id": 17, "name": "Pizza Carne de Sol (Broto)", "desc": "Mussarela, carne de sol, cebola", "price": 35}, {"id": 18, "name": "Pizza 4 Queijos (Broto)", "desc": "Mussarela, coalho, parmesão, requeijão", "price": 38}, {"id": 19, "name": "Pizza Frango + 3 Queijos (Broto)", "desc": "Mussarela, frango, parmesão, requeijão", "price": 39}, {"id": 20, "name": "Pizza Camarão (Broto)", "desc": "Mussarela, camarão, alho frito", "price": 38}]}, {"id": "pizzaD", "nome": "🍫 Pizzas Doces (Média 30 cm)", "itens": []}, {"id": "pizza3", "nome": "🍕 Pizzas de 3 Sabores", "itens": [{"id": 61, "name": "3 Sabores: Calabresa + Mista + Frango", "desc": "9 pedaços e borda recheada", "price": 60}, {"id": 62, "name": "3 Sabores: Brócolis c/ Alho + Vegetariana + Muçarela", "desc": "9 pedaços e borda recheada", "price": 60}, {"id": 63, "name": "3 Sabores: Portuguesa + Marguerita + Frango c/ Catupiry", "desc": "9 pedaços e borda recheada", "price": 65}, {"id": 64, "name": "3 Sabores: Peito de Peru + Bacon + Lombo Canadense", "desc": "9 pedaços e borda recheada", "price": 70}, {"id": 65, "name": "3 Sabores: Calabacon + Frangobacon + Calamista", "desc": "9 pedaços e borda recheada", "price": 75}, {"id": 66, "name": "3 Sabores: Pepperoni + Frango 3 Queijos + Atum", "desc": "9 pedaços e borda recheada", "price": 75}, {"id": 67, "name": "3 Sabores: Carne de Sol + 4 Queijos + Camarão", "desc": "9 pedaços e borda recheada", "price": 75}, {"id": 68, "name": "3 Sabores: Chapéu de Palha + Calabresa c/ Cheddar + Presunto c/ Catupiry", "desc": "9 pedaços e borda recheada", "price": 75}]}, {"id": "turbine", "nome": "⭐ Acréscimos da Pizza (Turbine)", "itens": [{"id": 69, "name": "Turbine: Proteínas", "desc": "Adicional de proteínas", "price": 10}, {"id": 70, "name": "Turbine: Cremes", "desc": "Adicional de cremes", "price": 5}, {"id": 71, "name": "Turbine: Variedades", "desc": "Adicional de variedades", "price": 3}, {"id": 72, "name": "Borda Catupiry", "desc": "Borda recheada", "price": 5}, {"id": 73, "name": "Borda Cheddar", "desc": "Borda recheada", "price": 8}, {"id": 74, "name": "Salva Borda Bacon", "desc": "", "price": 10}, {"id": 75, "name": "Salva Borda Alho", "desc": "", "price": 10}, {"id": 76, "name": "Salva Borda da Casa", "desc": "", "price": 10}]}, {"id": "sand", "nome": "🍔 Sanduíches", "itens": [{"id": 200, "name": "X-Burgue", "desc": "Pão hambúrguer, carne, queijo, cebola, tomate e alface", "price": 16}, {"id": 201, "name": "X-Bacon", "desc": "Pão hambúrguer, carne, bacon, queijo, cebola, tomate e alface", "price": 20}, {"id": 202, "name": "X-Calabresa", "desc": "Pão hambúrguer, carne, calabresa, queijo, cebola, tomate e alface", "price": 22}, {"id": 203, "name": "X-Tudo", "desc": "Pão hambúrguer, carne, presunto, ovo, queijo, cebola, tomate e alface", "price": 24}, {"id": 204, "name": "X-Salada", "desc": "Pão hambúrguer, queijo, + cebola, + tomate, alface", "price": 14}, {"id": 205, "name": "X-Frango", "desc": "Pão hambúrguer, queijo, frango desfiado, catupiry, cebola, tomate e alface", "price": 26}, {"id": 206, "name": "Carne de Sol", "desc": "Pão hambúrguer, carne de sol desfiada, cebola, tomate e alface", "price": 26}, {"id": 207, "name": "X-Tudão", "desc": "Pão hambúrguer, carne, queijo, ovo, presunto, frango desfiado, bacon, cebola, tomate e alface", "price": 30}]}, {"id": "combos", "nome": "🍟 Combos", "itens": [{"id": 208, "name": "Casal Petiscos", "desc": "300 g de batata frita + 40 salgadinhos", "price": 28}, {"id": 209, "name": "Trio Petiscos", "desc": "300 g de batata frita + 200 g de calabresa + 30 salgadinhos", "price": 37}, {"id": 210, "name": "Casal Bola", "desc": "2 x-tudo bola + 200 g de batata frita + 20 salgadinhos", "price": 45}, {"id": 211, "name": "Casal Árabe", "desc": "2 x-tudo árabe + 200 g de batata frita + 20 salgadinhos", "price": 50}, {"id": 212, "name": "Trio Perfeito", "desc": "3 x-tudo bola + 150 g de batata frita + 100 g de calabresa + cheddar + 20 salgadinhos", "price": 59}, {"id": 213, "name": "Família Árabe", "desc": "3 x-tudo árabe + 500 g de batata frita + 30 salgadinhos", "price": 69}, {"id": 214, "name": "Big Família", "desc": "4 x-tudo árabe + 250 g de batata frita + 150 g de calabresa + 30 salgadinhos", "price": 79}]}, {"id": "porcoes", "nome": "🍟 Porções", "itens": [{"id": 215, "name": "Batata Frita", "desc": "300 g de batata frita", "price": 15}, {"id": 216, "name": "Batata Frita Gourmet", "desc": "300 g de batata frita, bacon e cheddar", "price": 20}]}, {"id": "esfS", "nome": "🥙 Esfihas Salgadas (grandes)", "itens": [{"id": 217, "name": "Esfiha de Calabresa", "desc": "", "price": 5}, {"id": 218, "name": "Esfiha de Mista", "desc": "", "price": 5}, {"id": 219, "name": "Esfiha de Mussarela", "desc": "", "price": 5}, {"id": 220, "name": "Esfiha de Marguerita", "desc": "", "price": 5}, {"id": 221, "name": "Esfiha de Dois Queijos", "desc": "", "price": 6}, {"id": 222, "name": "Esfiha de Carne", "desc": "", "price": 6}, {"id": 223, "name": "Esfiha de Frango", "desc": "", "price": 6}, {"id": 224, "name": "Esfiha de Bacon", "desc": "", "price": 6}, {"id": 225, "name": "Esfiha de Carne de Sol", "desc": "", "price": 7}, {"id": 226, "name": "Esfiha de Camarão", "desc": "", "price": 7}]}, {"id": "esfD", "nome": "🥙 Esfihas Doces (grandes)", "itens": [{"id": 227, "name": "Esfiha de Chocolate", "desc": "", "price": 7}, {"id": 228, "name": "Esfiha de Romeu e Julieta", "desc": "", "price": 7}]}, {"id": "esfA", "nome": "🥙 Adicionais da Esfiha", "itens": [{"id": 229, "name": "Adicional Cheddar", "desc": "Qualquer adicional R$ 1,00", "price": 1}, {"id": 230, "name": "Adicional Catupiry", "desc": "Qualquer adicional R$ 1,00", "price": 1}, {"id": 231, "name": "Adicional Queijo", "desc": "Qualquer adicional R$ 1,00", "price": 1}, {"id": 232, "name": "Adicional Bacon", "desc": "Qualquer adicional R$ 1,00", "price": 1}, {"id": 233, "name": "Adicional Granulado", "desc": "Qualquer adicional R$ 1,00", "price": 1}, {"id": 234, "name": "Adicional M&M", "desc": "Qualquer adicional R$ 1,00", "price": 1}]}, {"id": "pastS", "nome": "🥟 Pastéis Salgados", "itens": []}, {"id": "pastD", "nome": "🥟 Pastéis Doces", "itens": []}, {"id": "calS", "nome": "🥖 Calzones Salgados", "itens": []}, {"id": "calD", "nome": "🥖 Calzones Doces", "itens": []}, {"id": "lasa", "nome": "🍝 Lasanhas", "itens": [{"id": 235, "name": "Lasanha Bolonhesa 250 ml", "desc": "", "price": 0, "pausado": true}, {"id": 236, "name": "Lasanha Bolonhesa 500 ml", "desc": "", "price": 0, "pausado": true}, {"id": 237, "name": "Lasanha de Frango ao Molho Branco 250 ml", "desc": "", "price": 0, "pausado": true}, {"id": 238, "name": "Lasanha de Frango ao Molho Branco 500 ml", "desc": "", "price": 0, "pausado": true}]}, {"id": "promo", "nome": "📅 Promoções do Dia", "itens": []}, {"id": "forno", "nome": "🥐 Salgados de Forno (120g)", "itens": [{"id": 77, "name": "Bola Burgue", "desc": "Carne + catupiry", "price": 7}, {"id": 78, "name": "Dogão", "desc": "Salsicha + queijo + catupiry", "price": 7}, {"id": 79, "name": "Joelho", "desc": "Queijo + presunto + catupiry", "price": 7}, {"id": 80, "name": "Frango (forno)", "desc": "Frango cremoso + catupiry", "price": 7}, {"id": 81, "name": "Carne (forno)", "desc": "Carne + bechamel", "price": 7}, {"id": 82, "name": "Calabresa (forno)", "desc": "Calabresa + cheddar", "price": 7}]}, {"id": "fritos", "nome": "🍤 Salgados Fritos", "itens": [{"id": 83, "name": "Coxinha", "desc": "Frango cremoso", "price": 5}, {"id": 84, "name": "Enroladinho", "desc": "Salsicha", "price": 5}, {"id": 85, "name": "Croquete", "desc": "Queijo + presunto", "price": 5}, {"id": 86, "name": "Risole", "desc": "Carne cremosa", "price": 5}, {"id": 87, "name": "Calabresa (frito)", "desc": "Calabresa + orégano", "price": 5}]}, {"id": "festaf", "nome": "🎉 Salgados de Festa: Fritos", "itens": [{"id": 88, "name": "100 Salgadinhos Fritos", "desc": "Frango, salsicha, queijo, misto, carne, pastelzinho", "price": 40}, {"id": 89, "name": "50 Salgadinhos Fritos", "desc": "Frango, salsicha, queijo, misto, carne, pastelzinho", "price": 20}, {"id": 90, "name": "35 Salgadinhos Fritos", "desc": "Frango, salsicha, queijo, misto, carne, pastelzinho", "price": 15}]}, {"id": "festao", "nome": "🎉 Salgados de Festa: Forno (tipo coquetel)", "itens": [{"id": 91, "name": "100 Diversos de Forno", "desc": "Mini pizza, mini burguer, mini dog, mini joelho, mini frango", "price": 80}, {"id": 92, "name": "50 Diversos de Forno", "desc": "Mini pizza, mini burguer, mini dog, mini joelho, mini frango", "price": 45}, {"id": 93, "name": "20 Diversos de Forno", "desc": "Mini pizza, mini burguer, mini dog, mini joelho, mini frango", "price": 20}, {"id": 94, "name": "Combo: Batata Frita + 2 Molhos", "desc": "Promoção por tempo limitado, só junto com salgados de festa", "price": 7}]}, {"id": "kit", "nome": "🎁 Kit Festa Coquetel", "itens": [{"id": 95, "name": "Kit Festa Coquetel (caixa com 50)", "desc": "Caixa com 50 unidades", "price": 44.99}]}, {"id": "acr", "nome": "➕ Acréscimos", "itens": [{"id": 239, "name": "Proteína a mais", "desc": "", "price": 0, "pausado": true}, {"id": 240, "name": "Molho", "desc": "", "price": 0, "pausado": true}, {"id": 241, "name": "Milho", "desc": "", "price": 0, "pausado": true}, {"id": 242, "name": "Ovo", "desc": "", "price": 0, "pausado": true}, {"id": 243, "name": "Azeitona", "desc": "", "price": 0, "pausado": true}]}, {"id": "bebidas", "nome": "🥤 Bebidas", "itens": [{"id": 96, "name": "Coca-Cola Lata", "desc": "", "price": 0, "pausado": true}, {"id": 97, "name": "Coca-Cola 1L", "desc": "", "price": 0, "pausado": true}, {"id": 98, "name": "Coca-Cola 2L", "desc": "", "price": 0, "pausado": true}, {"id": 99, "name": "Guaraná 1L", "desc": "", "price": 0, "pausado": true}, {"id": 100, "name": "Guaraná 2L", "desc": "", "price": 0, "pausado": true}, {"id": 101, "name": "Suco", "desc": "", "price": 0, "pausado": true}]}, {"id": "pratos", "nome": "Marmita: Proteínas", "itens": [{"id": 1000, "name": "Posta de Tilápia", "lib": true}, {"id": 1001, "name": "Bife a Cavalo", "lib": true}, {"id": 1002, "name": "Bisteca de Porco", "lib": true}, {"id": 1003, "name": "Fígado de Frango", "lib": true}, {"id": 1004, "name": "Fígado de Boi", "lib": true}, {"id": 1005, "name": "Linguiça", "lib": true}, {"id": 1006, "name": "Mistão", "lib": true}, {"id": 1007, "name": "Porco ao Molho", "lib": true}, {"id": 1008, "name": "Porco Assado", "lib": true}, {"id": 1009, "name": "Frango Assado", "lib": true}, {"id": 1010, "name": "Filé de Frango", "lib": true}, {"id": 1011, "name": "Frango ao Molho", "lib": true}, {"id": 1012, "name": "Estrogonofe de Frango", "lib": true}, {"id": 1013, "name": "Cozido de Boi/Pirão", "lib": true}, {"id": 1014, "name": "Panelada", "lib": true}, {"id": 1015, "name": "Feijoada", "lib": true}, {"id": 1016, "name": "Mão de Vaca", "lib": true}, {"id": 1017, "name": "Calabresa Acebolada", "lib": true}, {"id": 1018, "name": "Lasanha", "lib": true}, {"id": 1019, "name": "Ovos", "lib": true}], "tipo": "prato"}, {"id": "acomp", "nome": "Marmita: Acompanhamentos", "itens": [{"id": 1020, "name": "Feijão", "lib": true}, {"id": 1021, "name": "Arroz Refogado", "lib": true}, {"id": 1022, "name": "Macarrão", "lib": true}, {"id": 1023, "name": "Baião", "lib": true}, {"id": 1024, "name": "Farofa", "lib": true}, {"id": 1025, "name": "Cuscuz", "lib": true}], "tipo": "acomp"}, {"id": "saladas", "nome": "Marmita: Saladas", "itens": [{"id": 1026, "name": "Repolho Cremoso", "lib": true}, {"id": 1027, "name": "Alface Mista", "lib": true}, {"id": 1028, "name": "Vinagrete", "lib": true}, {"id": 1029, "name": "Salada de Maionese", "lib": true}], "tipo": "acomp"}, {"id": "compl", "nome": "Marmita: Complementos", "itens": [{"id": 1030, "name": "Batata Doce", "lib": true}, {"id": 1031, "name": "Abóbora", "lib": true}, {"id": 1032, "name": "Macaxeira", "lib": true}, {"id": 1033, "name": "Batata Frita", "lib": true}], "tipo": "acomp"}, {"id": "mFrango", "nome": "🍗 Frango e Linguiça Assados", "itens": [{"id": 1100, "name": "Frango Assado (inteiro)", "desc": "", "price": 27}, {"id": 1101, "name": "Meio Frango Assado", "desc": "", "price": 15}, {"id": 1102, "name": "Linguiça Assada", "desc": "", "price": 4}, {"id": 1103, "name": "Paçoca de Carne de Sol", "desc": "", "price": 15}], "k": "marmitas"}, {"id": "mCarnes", "nome": "🥩 Carnes Assadas", "itens": [{"id": 1104, "name": "Carne Assada 300 g", "desc": "", "price": 0, "pausado": true}, {"id": 1105, "name": "Carne Assada 500 g", "desc": "", "price": 0, "pausado": true}, {"id": 1106, "name": "Carne Assada 1 kg", "desc": "", "price": 0, "pausado": true}, {"id": 1107, "name": "Maminha Suína", "desc": "", "price": 0, "pausado": true}, {"id": 1108, "name": "Picanha Suína", "desc": "", "price": 0, "pausado": true}], "k": "marmitas"}, {"id": "mPan", "nome": "🍲 Panelada e Feijoada", "itens": [{"id": 1109, "name": "Só Panelada (porção)", "desc": "", "price": 22}, {"id": 1110, "name": "Panelada Completa", "desc": "Em porções", "price": 28}, {"id": 1111, "name": "Só Feijoada (porção)", "desc": "", "price": 22}, {"id": 1112, "name": "Feijoada Completa", "desc": "Em porções", "price": 28}], "k": "marmitas"}, {"id": "mSopas", "nome": "🥣 Sopas 500 ml", "itens": [{"id": 1113, "name": "Sopa de Carne", "desc": "", "price": 0, "pausado": true}, {"id": 1114, "name": "Sopa de Frango", "desc": "", "price": 0, "pausado": true}, {"id": 1115, "name": "Sopa de Feijão com Carne Moída e Macarrão Ave Maria", "desc": "", "price": 0, "pausado": true}], "k": "marmitas"}, {"id": "mCaldos", "nome": "🍵 Caldos 500 ml", "itens": [{"id": 1116, "name": "Caldo de Mocotó", "desc": "", "price": 0, "pausado": true}, {"id": 1117, "name": "Caldo de Ossada", "desc": "", "price": 0, "pausado": true}, {"id": 1118, "name": "Caldo de Peixe", "desc": "", "price": 0, "pausado": true}, {"id": 1119, "name": "Caldo de Moída com Ovos", "desc": "", "price": 0, "pausado": true}], "k": "marmitas"}, {"id": "mAcr", "nome": "➕ Acréscimos da Marmita", "itens": [{"id": 1120, "name": "Proteína a mais", "desc": "", "price": 0, "pausado": true}, {"id": 1121, "name": "Molho", "desc": "", "price": 0, "pausado": true}, {"id": 1122, "name": "Milho", "desc": "", "price": 0, "pausado": true}, {"id": 1123, "name": "Ovo", "desc": "", "price": 0, "pausado": true}, {"id": 1124, "name": "Azeitona", "desc": "", "price": 0, "pausado": true}], "k": "marmitas"}], "p1": 14, "p2": 18};
         let estado = {lanches:{aberta:true,pausada:false}, marmitas:{aberta:true,pausada:false}};
 
         let cart = {};
@@ -770,6 +782,25 @@ html.loj .footer-cart,html.loj #btn-admin{display:none!important}
         let precoMarmitaAtual = 14;
         let tipoMarmitaTexto = 'M';
         let historicoSelecaoPratos = [];
+        let meios = [];
+        const kOf = id => { const c = MENU.cats.find(c => c.itens.some(i => i.id == id)); return (c && c.k) || 'lanches'; };
+        function nomeSabor(i) { return i.name.replace(/^Pizza /, '').replace(/ \(Grande\)$/, ''); }
+        function popularMeio() {
+            const g = MENU.cats.find(c => c.id === 'pizzaG');
+            const its = g ? g.itens.filter(i => !i.pausado && i.price > 0) : [];
+            document.getElementById('meio-box').style.display = its.length > 1 ? 'block' : 'none';
+            const op = its.map(i => `<option value="${i.id}">${nomeSabor(i)} (R$ ${Number(i.price).toFixed(2).replace('.', ',')})</option>`).join('');
+            ['meio1', 'meio2'].forEach(id => { const s = document.getElementById(id); const v = s.value; s.innerHTML = op; if (v) s.value = v; });
+        }
+        function addMeio() {
+            const g = MENU.cats.find(c => c.id === 'pizzaG');
+            const a = g.itens.find(i => i.id == document.getElementById('meio1').value), b = g.itens.find(i => i.id == document.getElementById('meio2').value);
+            if (!a || !b) return;
+            if (a.id === b.id) { showCustomAlert('Escolha dois sabores diferentes.'); return; }
+            meios.push({ n: 'Pizza Meio a Meio (Grande): ' + nomeSabor(a) + ' / ' + nomeSabor(b), price: Math.max(a.price, b.price) });
+            showCustomAlert('Meio a meio adicionada! Vale o preço do sabor mais caro.');
+            calculateTotal();
+        }
 
         function renderCategory(items, containerId) {
             document.getElementById(containerId).innerHTML = items.map(item => `
@@ -788,9 +819,13 @@ html.loj .footer-cart,html.loj #btn-admin{display:none!important}
         }
 
         function renderAll() {
-            const lan = MENU.cats.filter(c => !c.tipo);
+            const lan = MENU.cats.filter(c => !c.tipo && c.k !== 'marmitas' && c.itens.length);
+            const marmc = MENU.cats.filter(c => !c.tipo && c.k === 'marmitas' && c.itens.length);
             document.getElementById('cats').innerHTML = lan.map(c => `<div class="accordion-item"><button class="accordion-header" onclick="toggleAccordion(this)"><span>${c.nome}</span><span class="icon">▼</span></button><div class="accordion-body"><div id="cat-${c.id}"></div></div></div>`).join('');
             lan.forEach(c => renderCategory(c.itens, 'cat-' + c.id));
+            document.getElementById('cats-marm').innerHTML = marmc.length ? '<div class="section-subtitle" style="text-align:center;margin-bottom:10px">Outras opções da marmitaria</div>' + marmc.map(c => `<div class="accordion-item"><button class="accordion-header" onclick="toggleAccordion(this)"><span>${c.nome}</span><span class="icon">▼</span></button><div class="accordion-body"><div id="cat-${c.id}"></div></div></div>`).join('') : '';
+            marmc.forEach(c => renderCategory(c.itens, 'cat-' + c.id));
+            popularMeio();
             const lista = (tipo, extra) => MENU.cats.filter(c => c.tipo === tipo).flatMap(c => c.itens).filter(p => p.lib).map(p => `<label class="checkbox-item ${p.pausado ? 'off' : ''}"><span class="item-text">${p.name}${p.pausado ? ' (indisponível)' : ''}</span><input type="checkbox" ${extra} value="${p.name}" ${p.pausado ? 'disabled' : ''}><div class="custom-check"></div></label>`).join('');
             const vazio = '<div class="item-desc">Cardápio do dia ainda não liberado.</div>';
             document.getElementById('lista-pratos').innerHTML = lista('prato', 'name="prato" onchange="gerenciarSelecaoPratos(this)"') || vazio;
@@ -938,12 +973,35 @@ html.loj .footer-cart,html.loj #btn-admin{display:none!important}
             calculateTotal();
         }
 
+        let taxaEntrega = null, kmEntrega = null, taxaEnd = '', taxaTimer = null;
+        function taxaTexto() { return 'R$ ' + taxaEntrega.toFixed(2).replace('.', ',') + (kmEntrega != null ? ' (' + kmEntrega.toFixed(1).replace('.', ',') + ' km)' : ' (endereço não localizado, taxa padrão)'); }
+        async function calcularTaxa() {
+            const end = document.getElementById('address').value.trim();
+            const info = document.getElementById('taxa-info');
+            if (end.length < 6) return;
+            info.innerText = 'Calculando a entrega...';
+            let r = { km: null, taxa: 3 };
+            if (!API.startsWith('COLE')) {
+                try {
+                    const c = new AbortController(); const t = setTimeout(() => c.abort(), 9000);
+                    const j = await (await fetch(API, { method: 'POST', body: JSON.stringify({ a: 'taxa', endereco: end }), signal: c.signal })).json();
+                    clearTimeout(t);
+                    if (j && typeof j.taxa === 'number') r = j;
+                } catch (e) {}
+            }
+            if (document.getElementById('address').value.trim() !== end) return;
+            taxaEntrega = r.taxa; kmEntrega = r.km; taxaEnd = end;
+            info.innerText = 'Entrega: ' + taxaTexto();
+            calculateTotal();
+        }
         function calculateTotal() {
             let total = 0;
             Object.keys(cart).forEach(id => {
                 total += cart[id].qty * cart[id].price;
             });
             marmitas.forEach(m => total += m.price);
+            meios.forEach(m => total += m.price);
+            if (taxaEntrega != null) total += taxaEntrega;
             document.getElementById('total-display').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
         }
 
@@ -958,7 +1016,8 @@ html.loj .footer-cart,html.loj #btn-admin{display:none!important}
 
         function novoPedido() {
             cart = {};
-            marmitas = [];
+            marmitas = []; meios = [];
+            document.getElementById('obs').value = '';
             document.querySelectorAll('[id^="qty-"]').forEach(el => el.innerText = '0');
             document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
             document.getElementById('name').value = '';
@@ -972,10 +1031,12 @@ html.loj .footer-cart,html.loj #btn-admin{display:none!important}
 
         function sendOrder() {
             const okK = k => estado[k].aberta && !estado[k].pausada;
+            const kt = { lanches: meios.length > 0, marmitas: marmitas.length > 0 };
+            Object.keys(cart).forEach(id => { if (cart[id].qty > 0) kt[kOf(id)] = true; });
             const temL = Object.keys(cart).some(id => cart[id].qty > 0);
-            if (!temL && marmitas.length === 0) { showCustomAlert("Seu carrinho está vazio!"); return; }
-            if (temL && !okK('lanches')) { showCustomAlert("A cozinha de pizzas e salgados não está recebendo pedidos agora."); return; }
-            if (marmitas.length && !okK('marmitas')) { showCustomAlert("A cozinha de marmitas não está recebendo pedidos agora."); return; }
+            if (!kt.lanches && !kt.marmitas) { showCustomAlert("Seu carrinho está vazio!"); return; }
+            if (kt.lanches && !okK('lanches')) { showCustomAlert("A cozinha de pizzas e salgados não está recebendo pedidos agora."); return; }
+            if (kt.marmitas && !okK('marmitas')) { showCustomAlert("A cozinha de marmitas não está recebendo pedidos agora."); return; }
             document.querySelector('.footer-cart').style.display = 'none';
             document.getElementById('entrega-modal').classList.add('active');
             if (window.ajEntrega) ajEntrega();
@@ -988,8 +1049,10 @@ html.loj .footer-cart,html.loj #btn-admin{display:none!important}
 
         function enviarPedido() {
             const okK = k => estado[k].aberta && !estado[k].pausada;
-            if (Object.keys(cart).some(id => cart[id].qty > 0) && !okK('lanches')) { showCustomAlert("A cozinha de pizzas e salgados não está recebendo pedidos agora."); return; }
-            if (marmitas.length && !okK('marmitas')) { showCustomAlert("A cozinha de marmitas não está recebendo pedidos agora."); return; }
+            const kt = { lanches: meios.length > 0, marmitas: marmitas.length > 0 };
+            Object.keys(cart).forEach(id => { if (cart[id].qty > 0) kt[kOf(id)] = true; });
+            if (kt.lanches && !okK('lanches')) { showCustomAlert("A cozinha de pizzas e salgados não está recebendo pedidos agora."); return; }
+            if (kt.marmitas && !okK('marmitas')) { showCustomAlert("A cozinha de marmitas não está recebendo pedidos agora."); return; }
             const name = document.getElementById('name').value;
             const address = document.getElementById('address').value;
             const payment = document.getElementById('payment').value;
@@ -999,7 +1062,7 @@ html.loj .footer-cart,html.loj #btn-admin{display:none!important}
             let hasItems = false;
             Object.keys(cart).forEach(id => { if (cart[id].qty > 0) hasItems = true; });
 
-            if (!hasItems && marmitas.length === 0) {
+            if (!kt.lanches && !kt.marmitas) {
                 showCustomAlert("Seu carrinho está vazio!");
                 return;
             }
@@ -1008,10 +1071,17 @@ html.loj .footer-cart,html.loj #btn-admin{display:none!important}
                 showCustomAlert("Por favor, preencha seu nome e endereço de entrega.");
                 return;
             }
+            if (taxaEnd !== address.trim()) {
+                calcularTaxa().then(() => { if (taxaEntrega != null) showCustomAlert('Entrega calculada: ' + taxaTexto() + '. Confira o total e toque em enviar de novo.'); });
+                return;
+            }
 
             let text = `Vim pelo app da La Mamacita e quero fazer este pedido:\n\n`;
             text += `*Cliente:* ${name}\n`;
-            text += `*Endereço:* ${address}\n\n`;
+            text += `*Endereço:* ${address}\n`;
+            const refv = document.getElementById('ref').value.trim();
+            if (refv) text += `*Referência:* ${refv}\n`;
+            text += `\n`;
 
             if (marmitas.length > 0) {
                 text += `*--- MARMITAS ---*\n`;
@@ -1023,7 +1093,7 @@ html.loj .footer-cart,html.loj #btn-admin{display:none!important}
                 text += `\n`;
             }
 
-            let hasLanchesText = false;
+            let hasLanchesText = false; let marmExtra = '';
             let lanchesText = `*--- PIZZAS, SALGADOS & OUTROS ---*\n`;
 
             const allItems = MENU.cats.filter(c => !c.tipo).flatMap(c => c.itens);
@@ -1032,25 +1102,30 @@ html.loj .footer-cart,html.loj #btn-admin{display:none!important}
                 if (cart[id].qty > 0) {
                     const item = allItems.find(i => i.id == id);
                     if (item) {
-                        lanchesText += `${cart[id].qty}x ${item.name} (R$ ${(item.price * cart[id].qty).toFixed(2)})\n`;
-                        hasLanchesText = true;
+                        const ln = `${cart[id].qty}x ${item.name} (R$ ${(item.price * cart[id].qty).toFixed(2)})\n`;
+                        if (kOf(id) === 'marmitas') marmExtra += ln; else { lanchesText += ln; hasLanchesText = true; }
                     }
                 }
             });
 
+            meios.forEach(m => { lanchesText += `1x ${m.n} (R$ ${m.price.toFixed(2)})\n`; hasLanchesText = true; });
             if (hasLanchesText) text += lanchesText + `\n`;
+            if (marmExtra) text += `*--- MARMITARIA ---*\n` + marmExtra + `\n`;
 
+            const obsv = document.getElementById('obs').value.trim();
+            if (obsv) text += `*Observações:* ${obsv}\n\n`;
             text += `*Forma de Pagamento:* ${payment}\n`;
             if (payment === 'Cartão') text += `_(Pagamento no ato da entrega)_\n`;
             if (payment === 'Dinheiro' && troco) text += `_Troco para: ${troco}_\n`;
 
-            text += `\n*Total:* ${document.getElementById('total-display').innerText}`;
+            text += `\n*Taxa de entrega:* ${taxaTexto()}\n*Total:* ${document.getElementById('total-display').innerText}`;
 
             const itensPedido = [];
-            Object.keys(cart).forEach(id => { if (cart[id].qty > 0) { const it = allItems.find(i => i.id == id); if (it) itensPedido.push({ k: 'lanches', n: it.name, q: cart[id].qty, p: it.price }); } });
+            Object.keys(cart).forEach(id => { if (cart[id].qty > 0) { const it = allItems.find(i => i.id == id); if (it) itensPedido.push({ k: kOf(id), n: it.name, q: cart[id].qty, p: it.price }); } });
             marmitas.forEach(m => itensPedido.push({ k: 'marmitas', n: 'Marmita (' + m.type + '): ' + m.mains.join(' + ') + (m.sides.length ? ' | Acomp: ' + m.sides.join(', ') : ''), q: 1, p: m.price }));
+            meios.forEach(m => itensPedido.push({ k: 'lanches', n: m.n, q: 1, p: m.price }));
             const totalNum = itensPedido.reduce((a, i) => a + i.q * i.p, 0);
-            if (!API.startsWith('COLE')) fetch(API, { method: 'POST', keepalive: true, body: JSON.stringify({ a: 'pedido', cliente: name, endereco: address, pag: payment, total: totalNum, itens: itensPedido }) }).catch(() => {});
+            if (!API.startsWith('COLE')) fetch(API, { method: 'POST', keepalive: true, body: JSON.stringify({ a: 'pedido', cliente: name, endereco: address, pag: payment, total: totalNum, taxa: taxaEntrega || 0, itens: itensPedido }) }).catch(() => {});
             const phone = "5585992254437";
             const url = `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(text)}`;
             window.open(url, '_blank');
@@ -1058,6 +1133,11 @@ html.loj .footer-cart,html.loj #btn-admin{display:none!important}
         }
 
         renderAll();
+        document.getElementById('address').addEventListener('input', () => {
+            taxaEntrega = null; kmEntrega = null; taxaEnd = ''; calculateTotal();
+            document.getElementById('taxa-info').innerText = '';
+            clearTimeout(taxaTimer); taxaTimer = setTimeout(calcularTaxa, 1200);
+        });
         carregar();
         setInterval(carregar, 30000);
     </script>
@@ -1080,7 +1160,18 @@ async function entrar(auto){if(!auto)pin=$('pin').value;$('lge').textContent='';
 async function poll(){try{const j=await api('ver');E=j.estado;P=j.pedidos;chk();['lanches','marmitas'].forEach(k=>{if(!E[k].aberta&&j.ultimo&&j.ultimo[k])R[k]=j.ultimo[k]});rK();rS();rP();rel(R[K])}catch(e){}}
 function draw(){rK();rS();rM();rP();rel(R[K])}
 function setK(k){K=k;draw()}
-function aba(n){[1,2,3].forEach(i=>{$('t'+i).hidden=i!=n;document.querySelectorAll('.tabs button')[i-1].className=i==n?'on':''})}
+let entDia=new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10),entLast=null;
+const hx=s=>String(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+async function ent(){
+$('t4').innerHTML='<div class="card"><b>Entregas do dia</b><br><input type="date" id="entd" value="'+entDia+'" onchange="setEntDia(this.value)" style="margin:8px 0"><div id="entr">Carregando...</div></div>';
+try{const j=await api('entregas',{dia:entDia});entLast=j;
+$('entr').innerHTML='<small>Quantidade de entregas</small><h2>'+j.n+'</h2><small>Total das taxas (pagar aos entregadores)</small><h2 style="color:var(--g)">'+brl(j.total)+'</h2>'+(j.lista||[]).map(x=>'<div class="card" style="margin:6px 0">'+new Date(x.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+' '+hx(x.cliente)+'<br><small>'+hx(x.endereco)+'</small><br><b>'+brl(x.taxa)+'</b></div>').join('')+(j.n?'<button class="b" onclick="entZap()">Enviar por WhatsApp</button>':'')
+}catch(e){if(e!==0)$('entr').textContent='Sem conexão com o script.'}}
+function entZap(){const j=entLast;if(!j)return;const t='*ENTREGAS LA MAMACITA - '+entDia.split('-').reverse().join('/')+'*\n\n*Quantidade:* '+j.n+'\n*Total das taxas:* '+brl(j.total)+'\n\n'+j.lista.map((x,i)=>(i+1)+'. '+brl(x.taxa)+' - '+x.cliente).join('\n');window.open('https://api.whatsapp.com/send?text='+encodeURIComponent(t),'_blank')}
+async function zerar(){const p=prompt('PIN do dono:');if(!p)return;
+if(!confirm('Apagar TODOS os pedidos e relatórios de teste? O cardápio e os preços ficam. Isso não pode ser desfeito.'))return;
+try{const j=await api('zerar',{pin:p});if(j.erro){alert('PIN do dono incorreto ou não configurado no script.');return}alert('Pronto! Pedidos e relatórios zerados.');location.reload()}catch(e){if(e!==0)alert('Não foi possível zerar. Confira a conexão.')}}
+function aba(n){if(n==4)ent();[1,2,3,4].forEach(i=>{$('t'+i).hidden=i!=n;document.querySelectorAll('.tabs button')[i-1].className=i==n?'on':''})}
 const pend=k=>P[k].filter(o=>o.status!=='feito'),st=k=>!E[k].aberta?'fechada':E[k].pausada?'pausada':'aberta';
 const dia=d=>new Date(d).toDateString(),tot=k=>{const e=E[k];return e.ini&&dia(e.ini)==dia(new Date())?P[k].filter(o=>o.status==='feito').reduce((a,o)=>a+o.total,0):0};
 function rK(){['lanches','marmitas'].forEach(k=>{const n=pend(k).length;$('k_'+k).className=k==K?'b':'k';$('k_'+k).innerHTML=(k=='lanches'?'🍕 Pizzas e Salgados':'🍱 Marmitas')+'<br><b style="font-size:1.15rem">'+brl(tot(k))+'</b><br><small style="color:inherit">'+st(k)+(n?' · '+n+' pend.':'')+'</small>'})}
@@ -1106,7 +1197,7 @@ const HK='lmhist',DS=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],PER=[['parcial
 let H={},per='parcial',lastTxt='';
 try{H=JSON.parse(localStorage.getItem(HK)||'{}')||{}}catch(e){H={}}
 function merge(){let ch=false;['lanches','marmitas'].forEach(k=>(P[k]||[]).forEach(o=>{if(!o||!o.id)return;const key=k+':'+o.id,x=H[key];if(!x||x.st!==o.status||(!x.it&&o.itens)){H[key]={k:k,ts:o.ts,pag:o.pag,st:o.status,it:o.itens};ch=true}}));if(ch)try{localStorage.setItem(HK,JSON.stringify(H))}catch(e){}}
-async function histRemoto(){try{const j=await api('historico');if(!Array.isArray(j.pedidos))return;j.pedidos.forEach(o=>{const k=String(o.sessao||'')[0]==='m'?'marmitas':'lanches';H[k+':'+o.id]={k:k,ts:o.ts,pag:o.pag,st:o.status,it:o.itens}});try{localStorage.setItem(HK,JSON.stringify(H))}catch(e){}}catch(e){}}
+async function histRemoto(){try{const j=await api('historico');if(!Array.isArray(j.pedidos))return;try{const rv=String(j.reset||0),old=localStorage.getItem('lmreset');if(old!==null&&old!==rv){H={};localStorage.removeItem(HK)}localStorage.setItem('lmreset',rv)}catch(e){}j.pedidos.forEach(o=>{const k=String(o.sessao||'')[0]==='m'?'marmitas':'lanches';H[k+':'+o.id]={k:k,ts:o.ts,pag:o.pag,st:o.status,it:o.itens}});try{localStorage.setItem(HK,JSON.stringify(H))}catch(e){}}catch(e){}}
 async function setPer(p){per=p;rel();if(p!=='parcial'&&p!=='fech'){await histRemoto();rel()}}
 function lista(){if(per==='parcial'){const e=E[K];if(!e.aberta)return null;return (P[K]||[]).filter(o=>!e.ini||new Date(o.ts)>=new Date(e.ini)).map(o=>({ts:o.ts,pag:o.pag,it:o.itens}))}
 const now=Date.now(),lim=per==='7'?now-6048e5:per==='30'?now-2592e6:0;
@@ -1147,7 +1238,7 @@ function abrirAdmin(){$('adm').classList.add('on');document.body.style.overflow=
 function fecharAdmin(){$('adm').classList.remove('on');document.body.style.overflow='';if(typeof carregar=='function')carregar()}
 function sair(){confirmar('Sair do painel neste aparelho?',()=>{ls.set(pin='');ativo=false;clearInterval(iv);$('pin').value='';$('lg').hidden=false})}
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&ativo)poll()});
-Object.assign(window,{setPer,zapTxt,sino,abrirAdmin,fecharAdmin,sair,entrar,setK,aba,est,fechar,ed,ps,lib,limpar,del,add,fin,parcial,zap,tg,setP});
+Object.assign(window,{zerar,ent,entZap,setEntDia(v){entDia=v;ent()},setPer,zapTxt,sino,abrirAdmin,fecharAdmin,sair,entrar,setK,aba,est,fechar,ed,ps,lib,limpar,del,add,fin,parcial,zap,tg,setP});
 })();
 </script>
 <script>window.addEventListener("load",function(){if(APP&&(window.matchMedia("(display-mode: standalone)").matches||navigator.standalone)){var bl=document.getElementById("btn-loj");if(bl)bl.style.display="none"}if(LOJ){var st=window.matchMedia("(display-mode: standalone)").matches||navigator.standalone;{var o=document.createElement("div");o.id="ov-loj";o.style.cssText="position:fixed;inset:0;z-index:2147483646;background:#000;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;font-family:Segoe UI,Roboto,Arial,sans-serif";o.innerHTML='<div style="font-size:3rem;color:#ffb020;font-style:italic;font-weight:bold">La Mamacita</div><div style="font-size:1.2rem;margin:6px 0 22px;font-weight:bold">App do Lojista</div><button type="button" style="padding:14px 30px;border:0;border-radius:24px;background:#ffb020;color:#000;font-weight:bold;font-size:1.05rem" '+(st?'onclick="event.stopPropagation();abrirNoNavegador()"':'')+'>📲 Instalar</button>';o.onclick=function(){var x=document.getElementById("inst");if(x)x.click()};document.body.appendChild(o);window.addEventListener("appinstalled",function(){o.innerHTML='<div style="font-size:3rem;color:#ffb020;font-style:italic;font-weight:bold">La Mamacita</div><div style="margin-top:10px;font-weight:bold">App instalado ✓</div>'})}}})</script>
